@@ -5,23 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MartianRobots.Models;
+using MartianRobots.EF.Contexts;
 
 namespace MartianRobots.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RobotController : ControllerBase
+    public class MartianRobotsController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
-        private readonly ILogger<RobotController> _logger;
+        private readonly ILogger<MartianRobotsController> _logger;
+        private readonly MartianRobotsContext _context;
 
-        public RobotController(ILogger<RobotController> logger)
+        public MartianRobotsController(ILogger<MartianRobotsController> logger, MartianRobotsContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]

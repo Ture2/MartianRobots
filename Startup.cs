@@ -28,9 +28,9 @@ namespace MartianRobots
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<MartianRobotsContext>(c =>
+            services.AddDbContext<MartianRobotsContext>(options =>
             {
-                c.UseSqlServer(Configuration.GetConnectionString("MartianRobotsConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("MartianRobots"));
             });
         }
 

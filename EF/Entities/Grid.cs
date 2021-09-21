@@ -15,6 +15,6 @@ namespace MartianRobots.EF.Entities
         public int YAxisLength { get; set; }
         public Planet Planet { get; set; }
 
-
+        public ICollection<Module> Modules{get;set;}
     }
 }
