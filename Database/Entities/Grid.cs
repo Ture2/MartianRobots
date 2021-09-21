@@ -16,5 +16,6 @@ namespace MartianRobots.Database.Entities
         public Planet Planet { get; set; }
 
         public ICollection<Module> Modules{get;set;}
+
     }
 }
