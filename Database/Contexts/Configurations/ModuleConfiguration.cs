@@ -1,8 +1,8 @@
-﻿using MartianRobots.EF.Entities;
+﻿using MartianRobots.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MartianRobots.EF.Contexts.Configurations
+namespace MartianRobots.Database.Contexts.Configurations
 {
     public class ModuleConfiguration : IEntityTypeConfiguration<Module>
     {

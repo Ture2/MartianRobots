@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MartianRobots.EF.Entities
+namespace MartianRobots.Database.Entities
 {
     public enum Planet
     {

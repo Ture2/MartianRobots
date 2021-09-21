@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MartianRobots.EF.Entities
+namespace MartianRobots.Database.Entities
 {
     public enum State
     {

@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MartianRobots.Models;
-using MartianRobots.EF.Contexts;
+using MartianRobots.Database.Contexts;
 
 namespace MartianRobots.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MartianRobotsController : ControllerBase
+    public class RobotController : ControllerBase
     {
 
-        private readonly ILogger<MartianRobotsController> _logger;
+        private readonly ILogger<RobotController> _logger;
         private readonly MartianRobotsContext _context;
 
-        public MartianRobotsController(ILogger<MartianRobotsController> logger, MartianRobotsContext context)
+        public RobotController(ILogger<RobotController> logger, MartianRobotsContext context)
         {
             _logger = logger;
             _context = context;

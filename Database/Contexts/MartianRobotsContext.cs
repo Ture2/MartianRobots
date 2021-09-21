@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MartianRobots.EF.Contexts.Configurations;
-using MartianRobots.EF.Entities;
+using MartianRobots.Database.Contexts.Configurations;
+using MartianRobots.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MartianRobots.EF.Contexts
+namespace MartianRobots.Database.Contexts
 {
     public class MartianRobotsContext : DbContext
     {
