@@ -8,32 +8,18 @@ using System.Threading.Tasks;
 
 namespace MartianRobots.Helpers.Commands
 {
-    public class RobotCommand: IRobotCommand
+    // Abstract class for robot instructions
+    public abstract class RobotCommand: IRobotCommand
     {
-        private readonly Instruction _instruction;
-        private readonly GridDTO _grid;
-
+        protected readonly Instruction _instruction;
+        protected readonly GridDTO _grid;
+        public GridDTO Result { get; protected set; }
         public RobotCommand(Instruction instruction, GridDTO gridDTO)
         {
             _instruction = instruction;
             _grid = gridDTO;
 
         }
-        public void Execute()
-        {
-            if (_instruction.Equals(Instruction.F))
-            {
-                
-            }
-            if (_instruction.Equals(Instruction.R))
-            {
-
-            }
-            if (_instruction.Equals(Instruction.L))
-            {
-
-            }
-           
-        }
+        public abstract void Execute();
     }
 }

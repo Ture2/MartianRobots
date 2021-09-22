@@ -1,5 +1,6 @@
 ﻿using MartianRobots.Helpers.Commands;
 using MartianRobots.Models;
+using MartianRobots.Models.Grids;
 using MartianRobots.Shared.Interfaces.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace MartianRobots.Helpers.Engines
     {
         private IDeployCommand _command;
         private readonly DeployDTO _item;
+        
 
         public DeployEngine(DeployDTO item)
         {
@@ -22,10 +24,11 @@ namespace MartianRobots.Helpers.Engines
             _command = command;
         }
 
-        public void Deploy()
+        public GridDTO Deploy()
         {
             SetCommand(new DeployCommand(_item));
             _command.Execute();
+            return _command.Result;
         }
 
 

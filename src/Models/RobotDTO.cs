@@ -12,8 +12,10 @@ namespace MartianRobots.Models
 
         public string Path { get; set; } = "";
 
-        public Module CurrentPosition { get; set; } = new Module();
-        public Module LostCoordinates { get; set; }
+        public Orientation CurrentOrientation { get; set; }
+
+        public ModuleDTO CurrentPosition { get; set; } = null;
+        public ModuleDTO LostCoordinates { get; set; } = null;
 
         public bool Lost { get; set; } = false;
 

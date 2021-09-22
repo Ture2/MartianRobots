@@ -5,10 +5,19 @@ using System.Threading.Tasks;
 
 namespace MartianRobots.Models
 {
+
     public class DeployDTO
     {
-        public List<int> GridSize { get; set; }
-        public List<string> RobotInitialPosition { get; set; }
+        public string GridSize { get; set; }
+
+        public RobotInfo[] RobotInfoList { get; set; }
+
+    }
+
+    public class RobotInfo
+    {
+        public string InitialPosition { get; set; }
+
         public string Path { get; set; }
     }
 }

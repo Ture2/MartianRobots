@@ -25,8 +25,7 @@ namespace MartianRobots.UnitTest.Database
         public void test1()
         {
             // Arrange
-            var mock = new Mock<Robot>();
-            mock.Setup(r => r.LastPosition = 1);
+           
 
             // Ac
 

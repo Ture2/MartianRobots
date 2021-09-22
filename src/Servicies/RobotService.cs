@@ -34,8 +34,15 @@ namespace MartianRobots.Servicies
         {
 
             DeployEngine engine = new DeployEngine(deployDTO);
+            RobotEngine robotEngine = new RobotEngine();
 
-            return Task.Factory.StartNew(() => engine.Deploy());
+            engine.Deploy();
+
+
+            robotEngine.RobotInfo = deployDTO.RobotInfoList[0];
+            //robotEngine.SetPositionCommand()
+
+            //deployDTO.RobotInfoList.ToList().ForEach(robot => robot);
 
             // Llamar al command handler hay que pasarle los elementos para que me genere un grid, y luego me ejecute la lista del path
 
