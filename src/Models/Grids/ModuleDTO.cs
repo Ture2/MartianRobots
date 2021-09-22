@@ -9,6 +9,8 @@ namespace MartianRobots.Models.Grids
         public int Y { get; set; }
         public bool Danger {get;set;}  // Representing the scent 
 
+        public bool Busy { get; set; }  // Representing if a robot is there 
+
         public ModuleDTO(Module module)
         {
             X = module.X;
@@ -16,7 +18,8 @@ namespace MartianRobots.Models.Grids
             Danger = (module.State == State.Danger);
         }
 
-
-
+        public ModuleDTO()
+        {
+        }
     }
 }

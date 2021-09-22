@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MartianRobots.Models;
 using MartianRobots.Database.Contexts;
+using MartianRobots.Shared.Inferfaces.Servicies;
 
 namespace MartianRobots.Controllers
 {
@@ -15,20 +16,15 @@ namespace MartianRobots.Controllers
     {
 
         private readonly ILogger<RobotController> _logger;
-        private readonly MartianRobotsContext _context;
+        private readonly IRobotService _robotService;
 
-        public RobotController(ILogger<RobotController> logger, MartianRobotsContext context)
+        public RobotController(ILogger<RobotController> logger, IRobotService context)
         {
             _logger = logger;
-            _context = context;
+            _robotService = context;
         }
 
-        [HttpGet]
-        public IEnumerable<RobotDTO> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new RobotDTO())
-            .ToArray();
-        }
+        [HttpPost]
+        public async Task Deploy(DeployDTO deployDTO) => await _robotService.DeployRobot(deployDTO);
     }
 }

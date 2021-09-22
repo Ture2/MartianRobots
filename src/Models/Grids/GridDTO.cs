@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MartianRobots.Models.Grids
 {
-    public abstract class GridDTO
+    public class GridDTO
     {
         public readonly int maxN = 50;
         public readonly int maxM = 50;
@@ -12,13 +12,19 @@ namespace MartianRobots.Models.Grids
         public int YAxisLength { get; set; }
         public Planet Planet { get; set; }
 
-        public ModuleDTO [,] grid = null;
+        public ModuleDTO [,] Grid { get; set; }
 
-        public List<Robot> RobotList { get; set; }
+        public RobotDTO CurrentRobotExploring { get; set; }
 
-    /** TODO: adapt grid to bidimensional array
-     */
-    public GridDTO(Grid grid)
+        public List<RobotDTO> RobotList { get; set; }
+
+        public GridDTO()
+        {
+        }
+
+        /** TODO: adapt grid to bidimensional array
+         */
+        public GridDTO(Grid grid)
         {
             XAxisLength = grid.XAxisLength;
             YAxisLength = grid.XAxisLength;
@@ -26,5 +32,7 @@ namespace MartianRobots.Models.Grids
             // grid = grid.Modules.fo
 
     }
-}
+
+        
+    }
 }

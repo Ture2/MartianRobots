@@ -8,13 +8,14 @@ namespace MartianRobots.Models
     public class RobotDTO
     {
 
-        public int NumberOfMoves { get; set; }
+        public int NumberOfMoves { get; set; } = 0;
 
-        public string Path { get; set; }
+        public string Path { get; set; } = "";
 
+        public Module CurrentPosition { get; set; } = new Module();
         public Module LostCoordinates { get; set; }
 
-        public bool Lost { get; set; }
+        public bool Lost { get; set; } = false;
 
         public RobotDTO(Robot robot)
         {
@@ -23,6 +24,8 @@ namespace MartianRobots.Models
             Lost = robot.Lost;
             LostCoordinates = robot.LastPosition;
         }
+
+        public RobotDTO(){}
 
     }
 }

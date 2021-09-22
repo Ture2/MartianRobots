@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MartianRobots.Database.Repositores.Base
 {
-    interface IRepository<T> where T: BaseEntity
+    public interface IRepository<T> where T: BaseEntity
     {
         Task<List<T>> GetAll();
         Task<T> Get(int id);
