@@ -3,8 +3,8 @@ namespace MartianRobots.Models
     public enum Orientation
     {
         N,
-        S, 
-        E,
+        E, 
+        S,
         W
 
     }

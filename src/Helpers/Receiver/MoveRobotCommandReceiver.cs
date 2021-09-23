@@ -64,10 +64,10 @@ namespace MartianRobots.Helpers.Receiver
 
         public RobotDTO TurnRight(RobotDTO robot)
         {
-            if (robot.CurrentOrientation - 3 > Orientation.W)
+            if (robot.CurrentOrientation + 1 > Orientation.W)
                 robot.CurrentOrientation = Orientation.N;
             else
-                robot.CurrentOrientation--;
+                robot.CurrentOrientation++;
             return robot;
         }
 
