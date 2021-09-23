@@ -3,6 +3,7 @@ using MartianRobots.Database.Repositores.Base;
 using MartianRobots.Helpers.Commands;
 using MartianRobots.Helpers.Engines;
 using MartianRobots.Models;
+using MartianRobots.Models.Grids;
 using MartianRobots.Shared.Inferfaces.Servicies;
 using MartianRobots.Shared.Interfaces.Commands;
 using System;
@@ -32,20 +33,19 @@ namespace MartianRobots.Servicies
 
         public Task DeployRobot(DeployDTO deployDTO)
         {
-
+            // Grid creation
             DeployEngine engine = new DeployEngine(deployDTO);
-            RobotEngine robotEngine = new RobotEngine();
+            GridDTO gridDTO = engine.Deploy();
 
-            engine.Deploy();
-
-
-            robotEngine.RobotInfo = deployDTO.RobotInfoList[0];
-            //robotEngine.SetPositionCommand()
-
-            //deployDTO.RobotInfoList.ToList().ForEach(robot => robot);
-
-            // Llamar al command handler hay que pasarle los elementos para que me genere un grid, y luego me ejecute la lista del path
-
+            // Robot deploys
+           
+            return Task.Factory.StartNew(() => {
+                foreach (RobotInfo r in deployDTO.RobotInfoList)
+                {
+                    RobotEngine robotEngine = new RobotEngine(r, gridDTO);
+                    robotEngine.Execute();
+                }
+            });
         }
 
         public Task<List<RobotDTO>> GetAllPlanetRobots(Guid planetId)

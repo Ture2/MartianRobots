@@ -11,12 +11,10 @@ namespace MartianRobots.Helpers.Commands
     // Abstract class for robot instructions
     public abstract class RobotCommand: IRobotCommand
     {
-        protected readonly Instruction _instruction;
         protected readonly GridDTO _grid;
         public GridDTO Result { get; protected set; }
-        public RobotCommand(Instruction instruction, GridDTO gridDTO)
+        public RobotCommand(GridDTO gridDTO)
         {
-            _instruction = instruction;
             _grid = gridDTO;
 
         }

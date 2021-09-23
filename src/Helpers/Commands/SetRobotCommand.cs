@@ -11,7 +11,7 @@ namespace MartianRobots.Helpers.Commands
     public class SetRobotCommand: RobotCommand
     {
         private readonly RobotInfo _data;
-        public SetRobotCommand(RobotInfo data, Instruction instruction, GridDTO gridDTO) : base(instruction, gridDTO)
+        public SetRobotCommand(RobotInfo data, GridDTO gridDTO) : base(gridDTO)
         {
             _data = data;
         }

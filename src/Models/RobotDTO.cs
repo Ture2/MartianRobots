@@ -24,7 +24,11 @@ namespace MartianRobots.Models
             NumberOfMoves = robot.NumberOfMoves;
             Path = robot.Path;
             Lost = robot.Lost;
-            LostCoordinates = robot.LastPosition;
+            LostCoordinates = new ModuleDTO()
+            {
+                X = robot.LastPosition.X,
+                Y = robot.LastPosition.Y
+            };
         }
 
         public RobotDTO(){}
