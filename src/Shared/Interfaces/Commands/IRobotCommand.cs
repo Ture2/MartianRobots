@@ -10,5 +10,6 @@ namespace MartianRobots.Shared.Interfaces.Commands
     public interface IRobotCommand
     {
         public void Execute();
+        public GridDTO GetResult();
     }
 }

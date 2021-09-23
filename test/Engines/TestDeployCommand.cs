@@ -41,7 +41,7 @@ namespace MartianRobots.UnitTest.Engines
                     XAxisLength = 6,
                     YAxisLength = 4,
                     Planet = Planet.Mars,
-                    Grid = GetEmptyGrid(5,3),
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
                     RobotList = new List<RobotDTO>()
                 }
                 ,
@@ -69,26 +69,6 @@ namespace MartianRobots.UnitTest.Engines
             };
         }
 
-        public static ModuleDTO[,] GetEmptyGrid(int x , int y)
-        {
-            x++;
-            y++;
-            ModuleDTO[,] gridModules = new ModuleDTO[y, x];
-
-            for (int j = 0; j < y; j++)
-            {
-                for (int i = 0; i < x; i++)
-                {
-                    gridModules[j, i] = new ModuleDTO()
-                    {
-                        X = i,
-                        Y = j,
-                        Danger = false,
-                        Busy = false
-                    };
-                }
-            }
-            return gridModules;
-        }
+        
     }
 }

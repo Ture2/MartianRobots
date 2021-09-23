@@ -19,5 +19,9 @@ namespace MartianRobots.Helpers.Commands
 
         }
         public abstract void Execute();
+        public GridDTO GetResult()
+        {
+            return Result;
+        }
     }
 }
