@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using MartianRobots.Database.Entities;
 using MartianRobots.Helpers.Commands;
+using MartianRobots.Helpers.Receivers;
 using MartianRobots.Models;
 using MartianRobots.Models.Grids;
 using MartianRobots.Shared.Interfaces.Commands;
@@ -66,8 +67,7 @@ namespace MartianRobots.UnitTest.Engines
         public void SetOnGridWrongPathTest(GridDTO grid, ModuleDTO robotModule, string orientation, string path)
         {
             GridDTO dto = _receiver.SetOnGrid(grid, robotModule, orientation, path);
-            Action act = () => _receiver.SetOnGrid(grid, robotModule, orientation, path);
-            Assert.Throws<ArgumentException>(act);
+            Assert.Throws<ArgumentException>(() => _receiver.SetOnGrid(grid, robotModule, orientation, path));
 
         }
 

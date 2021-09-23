@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MartianRobots.Helpers.Commands
+namespace MartianRobots.Helpers.Receivers
 {
     public class SetRobotCommandReceiver
     {
