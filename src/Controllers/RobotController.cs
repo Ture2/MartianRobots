@@ -11,7 +11,7 @@ using MartianRobots.Shared.Inferfaces.Servicies;
 namespace MartianRobots.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("martianrobots/[controller]")]
     public class RobotController : ControllerBase
     {
 

@@ -11,7 +11,7 @@ namespace MartianRobots.Helpers.Engines
 {
     public class RobotEngine
     {
-        private List<IRobotCommand> _moveCommands;
+        private List<IRobotCommand> _moveCommands = new List<IRobotCommand>();
         private IRobotCommand _setRobotCommand;
         private readonly GridDTO _gridDTO;
         private RobotInfo _item { get; set; }

@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MartianRobots.Database.Contexts;
+using MartianRobots.Database.Entities;
 using MartianRobots.Database.Repositores;
+using MartianRobots.Database.Repositores.Base;
 using MartianRobots.Database.Repositories;
+using MartianRobots.Servicies;
+using MartianRobots.Shared.Inferfaces.Servicies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +38,8 @@ namespace MartianRobots
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MartianRobots"));
             });
+            RegisterRepositories(services);
+            RegisterServicies(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,17 @@ namespace MartianRobots
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(MartianRobotsRepository<>));
+        }
+
+        private void RegisterServicies(IServiceCollection services)
+        {
+            
+            services.AddScoped<IRobotService, RobotService>();
         }
     }
 }
