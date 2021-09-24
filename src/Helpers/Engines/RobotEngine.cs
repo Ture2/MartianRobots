@@ -43,10 +43,18 @@ namespace MartianRobots.Helpers.Engines
 
             foreach (char i in _item.Path)
             {
-                SetPositionCommand(new MoveRobotCommand(InstructionParse(i), _gridDTO));
+                //Pasar _grid como out
+                MoveRobotCommand(new MoveRobotCommand(InstructionParse(i), _gridDTO));
             }
 
-            _moveCommands.ForEach(command => command.Execute());
+            foreach(MoveRobotCommand command in _moveCommands)
+            {
+                if (command.GetResult().CurrentRobotExploring.Lost == true |
+                    command.GetResult().CurrentRobotExploring.MissionEnded)
+                    break;
+                command.Execute();
+            }
+
         } 
        
 

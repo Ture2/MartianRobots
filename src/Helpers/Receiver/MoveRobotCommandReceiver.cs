@@ -38,8 +38,6 @@ namespace MartianRobots.Helpers.Receiver
 
         public GridDTO MoveFoward(GridDTO grid, RobotDTO robot, int x, int y)
         {
-            GridDTO updatedGrid = grid;
-
             if (robot.CurrentOrientation == Orientation.N)
                 y++;
             if (robot.CurrentOrientation == Orientation.S)
@@ -48,18 +46,14 @@ namespace MartianRobots.Helpers.Receiver
                 x++;
             if (robot.CurrentOrientation == Orientation.W)
                 x--;
-            if (OutOfRange(grid.maxN, grid.maxN, x, y))
+            if (IsOutOfSafeZone(grid.maxN, grid.maxN, x, y))
             {
-                if (!robot.CurrentPosition.Danger)
-                {
-                    updatedGrid =  FinishRobotOperation(grid); // Danger zone without advise = end
-                }
+                return OutOfSafeZoneMove(grid);
             }
             else
             {
-                updatedGrid = UpdateRobotPosition(grid, robot, x, y); // No out of range so continue
+                return UpdateRobotPosition(grid, x, y); // No out of range so continue
             }
-            return updatedGrid;
         }
 
         public RobotDTO TurnRight(RobotDTO robot)
@@ -80,8 +74,10 @@ namespace MartianRobots.Helpers.Receiver
             return robot;
         }
 
-        public GridDTO UpdateRobotPosition(GridDTO grid, RobotDTO robot, int x, int y)
+        public GridDTO UpdateRobotPosition(GridDTO grid, int x, int y)
         {
+            RobotDTO robot = grid.CurrentRobotExploring;
+
             // Leave module 
             grid.Grid[robot.CurrentPosition.Y, robot.CurrentPosition.X].Busy = false;
 
@@ -92,15 +88,21 @@ namespace MartianRobots.Helpers.Receiver
             grid.Grid[y, x] = robot.CurrentPosition;
             grid.Grid[y, x].Busy = true;
             grid.CurrentRobotExploring = robot;
+
             return grid;
         }
 
-        public GridDTO FinishRobotOperation(GridDTO grid)
+        public GridDTO OutOfSafeZoneMove(GridDTO grid)
         {
-            grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
-            grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Danger = true;
-            grid.RobotList.Add(grid.CurrentRobotExploring);
-            grid.CurrentRobotExploring = null;
+            if (!grid.CurrentRobotExploring.CurrentPosition.Danger)
+            {
+                // Danger zone without advise = end
+                grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
+                grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Danger = true;
+                grid.CurrentRobotExploring.Lost = true;
+                grid.CurrentRobotExploring.LostCoordinates = new ModuleDTO { X = grid.CurrentRobotExploring.CurrentPosition.X, Y = grid.CurrentRobotExploring.CurrentPosition.Y };
+                grid.RobotList.Add(grid.CurrentRobotExploring);
+            }
             return grid;
         }
 
@@ -110,16 +112,18 @@ namespace MartianRobots.Helpers.Receiver
             if (grid.CurrentRobotExploring.NumberOfMoves == 100)
             {
                 grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
-                grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Danger = true;
                 grid.RobotList.Add(grid.CurrentRobotExploring);
-                grid.CurrentRobotExploring = null;
+                grid.CurrentRobotExploring.MissionEnded = true;
             }
             return grid;
         }
 
-        private bool OutOfRange(int maxX, int maxY, int x, int y)
+        public bool IsOutOfSafeZone(int maxX, int maxY, int x, int y)
         {
-            return x == maxX || y == maxY;
+            bool top = (x >= maxX | y >= maxY);
+            bool bottom = (x < 0 | y < 0);
+
+            return top | bottom;
         }
 
     }

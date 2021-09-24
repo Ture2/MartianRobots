@@ -7,6 +7,7 @@ namespace MartianRobots.Database.Entities
     {
         public string Path { get; set; } // Input 
         public bool Lost { get; set; }
+        public bool MissionEnded { get; set; }
 
         public int NumberOfMoves { get; set; }
 

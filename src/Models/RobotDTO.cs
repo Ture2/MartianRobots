@@ -18,6 +18,7 @@ namespace MartianRobots.Models
         public ModuleDTO LostCoordinates { get; set; } = null;
 
         public bool Lost { get; set; } = false;
+        public bool MissionEnded { get; set; } = false;
 
         public RobotDTO(Robot robot)
         {
@@ -29,6 +30,7 @@ namespace MartianRobots.Models
                 X = robot.LastPosition.X,
                 Y = robot.LastPosition.Y
             };
+            MissionEnded = robot.MissionEnded;
         }
 
         public RobotDTO(){}
