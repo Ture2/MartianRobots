@@ -100,22 +100,256 @@ namespace MartianRobots.UnitTest.Engines
         }
 
 
+        
         [Theory]
-        [MemberData(nameof(MoveFowardData))]
-        public void TestMoveFoward(GridDTO grid, RobotDTO robot, int x, int y)
+        [MemberData(nameof(MoveNormalFowardEast))]
+        public void TestNormalMoveFowardEast(params int[] expected)
         {
-            _receiver.MoveFoward(grid, robot, x, y);
+            // 
+
+            ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(5, 3);
+            ModuleDTO toModule = new ModuleDTO()
+            {
+                X = expected[0],
+                Y = expected[1],
+                Busy = true,
+                Danger = false
+            };
+            grid[expected[1], expected[0]] = toModule;
+            RobotDTO robot = new RobotDTO()
+            {
+                CurrentPosition = toModule,
+                CurrentOrientation = Orientation.E,
+            };
+
+            GridDTO dto = new GridDTO()
+            {
+                XAxisLength = 6,
+                YAxisLength = 4,
+                Planet = Planet.Mars,
+                Grid = grid,
+                RobotList = new List<RobotDTO>(),
+                CurrentRobotExploring = robot
+            };
+
+            var res = _receiver.MoveFoward(dto);
+
+
+            Assert.Equal(expected[2], res.CurrentRobotExploring.CurrentPosition.X); // X pos
+            Assert.Equal(expected[3], res.CurrentRobotExploring.CurrentPosition.Y); // Y pos
+            Assert.False(res.Grid[expected[1],expected[0]].Busy); // Busy old
+            Assert.True(res.Grid[expected[3], expected[2]].Busy); // Busy new
+
         }
 
+        [InlineData(2,2,0,2)]
+        [Theory]
+        public void TestLostRobotMove(int xGridSize, int yGridSize, int xStartPoint, int yStartPoint)
+        {
 
+            ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(xGridSize, yGridSize);
+            ModuleDTO toModule = new ModuleDTO()
+            {
+                X = xStartPoint,
+                Y = yStartPoint,
+                Busy = true,
+                Danger = false
+            };
+            grid[yStartPoint, xStartPoint] = toModule;
+            RobotDTO robot = new RobotDTO()
+            {
+                CurrentPosition = toModule,
+                CurrentOrientation = Orientation.E,
+            };
+
+            GridDTO dto = new GridDTO()
+            {
+                XAxisLength = xGridSize + 1,
+                YAxisLength = yGridSize + 1,
+                Planet = Planet.Mars,
+                Grid = grid,
+                RobotList = new List<RobotDTO>(),
+                CurrentRobotExploring = robot
+            };
+
+            var res = _receiver.OutOfSafeZoneMove(dto);
+
+
+            Assert.Null(res.CurrentRobotExploring.CurrentPosition); // old busy
+        }
+
+        [InlineData(2, 2, 0, 0, Instruction.F, 0, 1, Orientation.N, Orientation.N, 1, true)]
+        [InlineData(2, 2, 0, 1, Instruction.L, 0, 1, Orientation.W, Orientation.S, 1, false)]
+        [InlineData(2, 2, 0, 2, Instruction.R, 0, 2, Orientation.E, Orientation.S, 1, false)]
+        [InlineData(2, 2, 0, 2, Instruction.F, 0, 1, Orientation.S, Orientation.S, 1, true)]
+        [InlineData(2, 2, 1, 1, Instruction.F, 2, 1, Orientation.E, Orientation.E, 1, true)]
+        [InlineData(2, 2, 2, 2, Instruction.F, 1, 2, Orientation.W, Orientation.W, 1, true)]
+        [Theory]
+        public void TestMove(int xGridSize, int yGridSize, int xStartPoint, int yStartPoint, Instruction i,
+            int expectedX, int expectedY, Orientation orientation, Orientation expectedOrientation, int numMoves, bool checkBusy)
+        {
+
+            ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(xGridSize, yGridSize);
+            ModuleDTO toModule = new ModuleDTO()
+            {
+                X = xStartPoint,
+                Y = yStartPoint,
+                Busy = true,
+                Danger = false
+            };
+            grid[yStartPoint, xStartPoint] = toModule;
+            RobotDTO robot = new RobotDTO()
+            {
+                CurrentPosition = toModule,
+                CurrentOrientation = orientation,
+            };
+
+            GridDTO dto = new GridDTO()
+            {
+                XAxisLength = xGridSize + 1,
+                YAxisLength = yGridSize + 1,
+                Planet = Planet.Mars,
+                Grid = grid,
+                RobotList = new List<RobotDTO>(),
+                CurrentRobotExploring = robot
+            };
+
+            var res = _receiver.Move(dto, i);
+
+
+            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.X, expectedX);
+            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.Y, expectedY);
+            Assert.Equal(res.CurrentRobotExploring.CurrentOrientation, expectedOrientation);
+            if (checkBusy)
+            {
+                Assert.True(res.Grid[expectedY, expectedX].Busy);
+                Assert.False(res.Grid[yStartPoint, xStartPoint].Busy);
+            }
+            Assert.Equal(res.CurrentRobotExploring.CurrentPosition, res.Grid[expectedY, expectedX]);
+            Assert.Equal(res.CurrentRobotExploring.NumberOfMoves, numMoves);
+        }
+
+        [InlineData(2, 2, 2, 2, Orientation.N)]
+        [InlineData(2, 2, 2, 2, Orientation.E)]
+        [InlineData(2, 2, 0, 2, Orientation.N)]
+        [InlineData(2, 2, 0, 2, Orientation.W)]
+        [InlineData(2, 2, 2, 0, Orientation.E)]
+        [InlineData(2, 2, 2, 0, Orientation.S)]
+        [InlineData(2, 2, 0, 0, Orientation.S)]
+        [InlineData(2, 2, 0, 0, Orientation.W)]
+        [InlineData(50, 50, 0, 0, Orientation.S)]
+        [InlineData(50, 50, 0, 0, Orientation.W)]
+        [InlineData(50, 50, 0, 50, Orientation.W)]
+        [InlineData(50, 50, 0, 50, Orientation.N)]
+        [InlineData(50, 50, 50, 50, Orientation.N)]
+        [InlineData(50, 50, 50, 50, Orientation.E)]
+        [InlineData(50, 50, 50, 0, Orientation.E)]
+        [InlineData(50, 50, 50, 0, Orientation.S)]
+        [Theory]
+        public void TestMoveOutOfIndexRange(int xGridSize, int yGridSize, int xStartPoint, int yStartPoint,
+           Orientation orientation)
+        {
+
+            ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(xGridSize, yGridSize);
+            ModuleDTO toModule = new ModuleDTO()
+            {
+                X = xStartPoint,
+                Y = yStartPoint,
+                Busy = true,
+                Danger = false
+            };
+            grid[yStartPoint, xStartPoint] = toModule;
+            RobotDTO robot = new RobotDTO()
+            {
+                CurrentPosition = toModule,
+                CurrentOrientation = orientation,
+            };
+
+            GridDTO dto = new GridDTO()
+            {
+                XAxisLength = xGridSize + 1,
+                YAxisLength = yGridSize + 1,
+                Planet = Planet.Mars,
+                Grid = grid,
+                RobotList = new List<RobotDTO>(),
+                CurrentRobotExploring = robot
+            };
+
+            var res = _receiver.Move(dto, Instruction.F);
+
+
+
+            Assert.True(res.CurrentRobotExploring.Lost);
+            Assert.Null(res.CurrentRobotExploring.CurrentPosition);
+            Assert.Equal(res.CurrentRobotExploring.LostCoordinates, res.Grid[yStartPoint, xStartPoint]);
+            Assert.False(res.Grid[yStartPoint, xStartPoint].Busy);
+            Assert.Contains(res.CurrentRobotExploring, res.RobotList);
+            
+        }
+
+        [Theory]
+        [InlineData(2, 2, 2, 2, Orientation.N)]
+        [InlineData(2, 2, 2, 2, Orientation.E)]
+        [InlineData(2, 2, 0, 2, Orientation.N)]
+        [InlineData(2, 2, 0, 2, Orientation.W)]
+        [InlineData(2, 2, 2, 0, Orientation.E)]
+        [InlineData(2, 2, 2, 0, Orientation.S)]
+        [InlineData(2, 2, 0, 0, Orientation.S)]
+        [InlineData(2, 2, 0, 0, Orientation.W)]
+        [InlineData(50, 50, 0, 0, Orientation.S)]
+        [InlineData(50, 50, 0, 0, Orientation.W)]
+        [InlineData(50, 50, 0, 50, Orientation.W)]
+        [InlineData(50, 50, 0, 50, Orientation.N)]
+        [InlineData(50, 50, 50, 50, Orientation.N)]
+        [InlineData(50, 50, 50, 50, Orientation.E)]
+        [InlineData(50, 50, 50, 0, Orientation.E)]
+        [InlineData(50, 50, 50, 0, Orientation.S)]
+        public void TestMoveOutOfIndexRangeWithDangerFlag(int xGridSize, int yGridSize, int xStartPoint, int yStartPoint, Orientation orientation)
+        {
+            // Arrange
+            ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(xGridSize, yGridSize);
+            ModuleDTO toModule = new ModuleDTO()
+            {
+                X = xStartPoint,
+                Y = yStartPoint,
+                Busy = true,
+                Danger = true
+            };
+            grid[yStartPoint, xStartPoint] = toModule;
+            RobotDTO robot = new RobotDTO()
+            {
+                CurrentPosition = toModule,
+                CurrentOrientation = orientation,
+            };
+
+            GridDTO dto = new GridDTO()
+            {
+                XAxisLength = xGridSize + 1,
+                YAxisLength = yGridSize + 1,
+                Planet = Planet.Mars,
+                Grid = grid,
+                RobotList = new List<RobotDTO>(),
+                CurrentRobotExploring = robot
+            };
+
+            //Act
+            var res = _receiver.Move(dto, Instruction.F);
+
+            //Assert
+            Assert.Equal(res, dto);
+            
+
+        }
 
         #region data
-        public static IEnumerable<object[]> MoveFowardData()
+        public static IEnumerable<object[]> MoveNormalFowardEast()
         {
-            yield return new object[]
-            {
+            // FFFF 
+            yield return new object[] { 3, 3, 1, 1, 2, 1 };
+            yield return new object[] { 3, 3, 2, 1, 3, 1 };
+            yield return new object[] { 3, 3, 3, 1, 4, 1 };
+            yield return new object[] { 3, 3, 4, 1, 5, 1 };
 
-            };
         }
 
         public static IEnumerable<object[]> UpdatePosData()

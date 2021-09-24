@@ -15,29 +15,28 @@ namespace MartianRobots.Helpers.Receiver
 
         public GridDTO Move(GridDTO grid, Instruction i)
         {
-            RobotDTO robot = grid.CurrentRobotExploring;
-            int x = robot.CurrentPosition.X;
-            int y = robot.CurrentPosition.Y;
-
             if (i == Instruction.F)
-                grid = MoveFoward(grid, robot, x, y);
+                grid = MoveFoward(grid);
             if (i == Instruction.L)
             {
-                grid.CurrentRobotExploring = TurnLeft(robot);
+                grid.CurrentRobotExploring = TurnLeft(grid.CurrentRobotExploring);
             }
             if (i == Instruction.R)
             {
-                grid.CurrentRobotExploring = TurnRight(robot);
+                grid.CurrentRobotExploring = TurnRight(grid.CurrentRobotExploring);
             }
 
             grid.CurrentRobotExploring.NumberOfMoves++;
 
             return grid;
-            
         }
 
-        public GridDTO MoveFoward(GridDTO grid, RobotDTO robot, int x, int y)
+        public GridDTO MoveFoward(GridDTO grid)
         {
+            RobotDTO robot = grid.CurrentRobotExploring;
+            int x = robot.CurrentPosition.X;
+            int y = robot.CurrentPosition.Y;
+
             if (robot.CurrentOrientation == Orientation.N)
                 y++;
             if (robot.CurrentOrientation == Orientation.S)
@@ -46,7 +45,7 @@ namespace MartianRobots.Helpers.Receiver
                 x++;
             if (robot.CurrentOrientation == Orientation.W)
                 x--;
-            if (IsOutOfSafeZone(grid.maxN, grid.maxN, x, y))
+            if (IsOutOfSafeZone(grid.XAxisLength, grid.YAxisLength, x, y))
             {
                 return OutOfSafeZoneMove(grid);
             }
@@ -76,18 +75,16 @@ namespace MartianRobots.Helpers.Receiver
 
         public GridDTO UpdateRobotPosition(GridDTO grid, int x, int y)
         {
-            RobotDTO robot = grid.CurrentRobotExploring;
+            if (x < 0 | y < 0)
+                throw new ArgumentOutOfRangeException();
 
-            // Leave module 
-            grid.Grid[robot.CurrentPosition.Y, robot.CurrentPosition.X].Busy = false;
-
-            robot.CurrentPosition.X = x;
-            robot.CurrentPosition.Y = y;
-
-            //New module
-            grid.Grid[y, x] = robot.CurrentPosition;
+            int oldx = grid.CurrentRobotExploring.CurrentPosition.X;
+            int oldy = grid.CurrentRobotExploring.CurrentPosition.Y;
+            
+            grid.Grid[oldy, oldx].Busy = false;
             grid.Grid[y, x].Busy = true;
-            grid.CurrentRobotExploring = robot;
+
+            grid.CurrentRobotExploring.CurrentPosition = grid.Grid[y, x];
 
             return grid;
         }
@@ -100,7 +97,8 @@ namespace MartianRobots.Helpers.Receiver
                 grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
                 grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Danger = true;
                 grid.CurrentRobotExploring.Lost = true;
-                grid.CurrentRobotExploring.LostCoordinates = new ModuleDTO { X = grid.CurrentRobotExploring.CurrentPosition.X, Y = grid.CurrentRobotExploring.CurrentPosition.Y };
+                grid.CurrentRobotExploring.LostCoordinates = grid.CurrentRobotExploring.CurrentPosition;
+                grid.CurrentRobotExploring.CurrentPosition = null;
                 grid.RobotList.Add(grid.CurrentRobotExploring);
             }
             return grid;
