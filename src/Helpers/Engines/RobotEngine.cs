@@ -49,10 +49,10 @@ namespace MartianRobots.Helpers.Engines
 
             foreach(MoveRobotCommand command in _moveCommands)
             {
+                command.Execute();
                 if (command.GetResult().CurrentRobotExploring.Lost == true |
                     command.GetResult().CurrentRobotExploring.MissionEnded)
                     break;
-                command.Execute();
             }
 
         } 
