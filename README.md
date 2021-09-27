@@ -108,13 +108,14 @@ To run the app, firstly clone this repo with visual studio.
 
 3. Check package are installed.
 4. Run migrations and model creation using the command: *"Update-Database"* in the package manager console or *"dotnet ef database update"*  in normal terminal.
-![Tables](/assets/images/ass2.png)
+![Tables](assets/images/ass2.png)
 5. Run the app with MartianRobot Debug Profile.
 6. Test using Postman passing the input requirements. 
 
 
-![Example with postman](/assets/images/ass1.png)
-![Module Table result](/assets/images/ass3.png)
-![Grid Table result](/assets/images/ass4.png)
-![Robot Table result](/assets/images/ass5.png)
+![Example with postman](assets/images/ass1.png "Postman")
+
+![Module Table result](assets/images/ass3.png)
+![Grid Table result](assets/images/ass4.png)
+![Robot Table result](assets/images/ass5.png)
 
