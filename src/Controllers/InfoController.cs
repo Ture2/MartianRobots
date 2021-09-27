@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MartianRobots.Shared.Interfaces.Servicies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,40 +9,26 @@ using System.Threading.Tasks;
 
 namespace MartianRobots.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("martianrobots/[controller]")]
     [ApiController]
     public class InfoController : ControllerBase
     {
-        // GET: api/<InfoController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IInfoService _infoService;
+        private readonly ILogger<InfoController> _logger;
+
+        public InfoController(ILogger<InfoController> logger, IInfoService service)
         {
-            return new string[] { "value1", "value2" };
+            _logger = logger;
+            _infoService = service;
         }
 
         // GET api/<InfoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public Task Get()
         {
-            return "value";
+            return _infoService.GetAll();
         }
 
-        // POST api/<InfoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
-        // PUT api/<InfoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<InfoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

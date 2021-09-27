@@ -18,10 +18,10 @@ namespace MartianRobots.Controllers
         private readonly ILogger<RobotController> _logger;
         private readonly IRobotService _robotService;
 
-        public RobotController(ILogger<RobotController> logger, IRobotService context)
+        public RobotController(ILogger<RobotController> logger, IRobotService service)
         {
             _logger = logger;
-            _robotService = context;
+            _robotService = service;
         }
 
         [HttpPost]

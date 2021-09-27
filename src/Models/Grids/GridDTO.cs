@@ -22,14 +22,12 @@ namespace MartianRobots.Models.Grids
         {
         }
 
-        /** TODO: adapt grid to bidimensional array
-         */
+        
         public GridDTO(Grid grid)
         {
             XAxisLength = grid.XAxisLength;
             YAxisLength = grid.XAxisLength;
             Planet = grid.Planet;
-            // grid = grid.Modules.fo
         }
 
     }

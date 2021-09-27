@@ -15,20 +15,14 @@ namespace MartianRobots.Servicies
 {
     public class RobotService: IRobotService
     {
-        private readonly IRepository<Robot> _robotRepository;
         private readonly IRepository<Grid> _gridRepository;
-        private readonly IRepository<Module> _moduleRepository;
 
 
         public RobotService(
-            IRepository<Robot> robotsRepository,
-            IRepository<Grid> gridRepository,
-            IRepository<Module> moduleRepository
+            IRepository<Grid> gridRepository
             )
         {
-            _robotRepository = robotsRepository;
             _gridRepository = gridRepository;
-            _moduleRepository = moduleRepository;
             
         }
         

@@ -24,7 +24,7 @@ namespace MartianRobots.Database.Repositores.Base
 
         public async Task<IEnumerable<TEntity>> AddRange(IEnumerable<TEntity> entities)
         {
-            context.Set<TEntity>().AddRangeAsync(entities);
+            await context.Set<TEntity>().AddRangeAsync(entities);
             await context.SaveChangesAsync();
             return entities;
         }
