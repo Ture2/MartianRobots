@@ -25,6 +25,6 @@ namespace MartianRobots.Controllers
         }
 
         [HttpPost]
-        public async Task Deploy(DeployDTO deployDTO) => await _robotService.DeployRobot(deployDTO);
+        public async Task<List<string>> Deploy(DeployDTO deployDTO) => await _robotService.DeployRobot(deployDTO);
     }
 }

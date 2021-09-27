@@ -19,10 +19,13 @@ namespace MartianRobots.Database.Contexts.Configurations
             builder.Property(p => p.NumberOfMoves)
                 .IsRequired();
 
-            builder.HasOne<Module>(m => m.LastPosition)
-                .WithOne(r => r.Robot)
-                .HasForeignKey<Module>(m => m.RobotId);
+            builder.HasOne<Grid>(r => r.Grid)
+                 .WithMany(g => g.Robots)
+                 .HasForeignKey(r => r.GridId);
 
+            builder.HasOne<Module>(r => r.LastPosition)
+               .WithOne(m => m.Robot)
+               .HasForeignKey<Module>(m => m.RobotId);
         }
     }
 }

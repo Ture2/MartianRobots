@@ -4,14 +4,16 @@ using MartianRobots.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MartianRobots.Migrations
 {
     [DbContext(typeof(MartianRobotsContext))]
-    partial class MartianRobotsContextModelSnapshot : ModelSnapshot
+    [Migration("20210927085452_Update-Model-Null")]
+    partial class UpdateModelNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -20,6 +20,8 @@ namespace MartianRobots.Models
         public bool Lost { get; set; } = false;
         public bool MissionEnded { get; set; } = false;
 
+        public RobotDTO() { }
+
         public RobotDTO(Robot robot)
         {
             NumberOfMoves = robot.NumberOfMoves;
@@ -33,7 +35,13 @@ namespace MartianRobots.Models
             MissionEnded = robot.MissionEnded;
         }
 
-        public RobotDTO(){}
+        public override string ToString()
+        {
+            if (Lost)
+                return $"{LostCoordinates.X} {LostCoordinates.Y} {CurrentOrientation} LOST";
+            else
+                return $"{CurrentPosition.X} {CurrentPosition.Y} {CurrentOrientation}";
+        }
 
     }
 }

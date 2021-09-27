@@ -11,16 +11,20 @@ namespace MartianRobots.Helpers.Commands
     public class MoveRobotCommand : RobotCommand
     {
         private Instruction _i { get; set; }
-        private MoveRobotCommandReceiver _receiver;
+        private MoveRobotCommandReceiver _receiver = new MoveRobotCommandReceiver();
         public MoveRobotCommand(Instruction instruction, GridDTO gridDTO) : base(gridDTO)
         {
             _i = instruction;
         }
         public override void Execute()
         {
-            _receiver = new MoveRobotCommandReceiver();
-            GridDTO updatedGrid = _receiver.Move(_grid, _i);
-            Result = _receiver.ValidateMove(updatedGrid);
+            _receiver.Move(_grid, _i);
+            
+        }
+
+        public void Validate()
+        {
+            _receiver.ValidateLastMove(_grid);
         }
     }
 }

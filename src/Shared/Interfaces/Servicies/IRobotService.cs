@@ -10,7 +10,7 @@ namespace MartianRobots.Shared.Inferfaces.Servicies
     {
         Task<RobotDTO> GetRobot(Guid id);
         Task<List<RobotDTO>> GetAllPlanetRobots(Guid planetId);
-        Task DeployRobot(DeployDTO robot);
+        Task<List<string>> DeployRobot(DeployDTO robot);
         //Task MoveRobot(IntructionDTO instruction);
 
         

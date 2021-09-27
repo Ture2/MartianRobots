@@ -4,14 +4,16 @@ using MartianRobots.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MartianRobots.Migrations
 {
     [DbContext(typeof(MartianRobotsContext))]
-    partial class MartianRobotsContextModelSnapshot : ModelSnapshot
+    [Migration("20210925083308_Update-Model")]
+    partial class UpdateModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,10 +47,10 @@ namespace MartianRobots.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("GridId")
+                    b.Property<Guid>("GridId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RobotId")
+                    b.Property<Guid>("RobotId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
@@ -65,8 +67,7 @@ namespace MartianRobots.Migrations
                     b.HasIndex("GridId");
 
                     b.HasIndex("RobotId")
-                        .IsUnique()
-                        .HasFilter("[RobotId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Modules");
                 });
@@ -75,9 +76,6 @@ namespace MartianRobots.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GridId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Lost")
@@ -95,8 +93,6 @@ namespace MartianRobots.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GridId");
-
                     b.ToTable("Robots");
                 });
 
@@ -105,33 +101,23 @@ namespace MartianRobots.Migrations
                     b.HasOne("MartianRobots.Database.Entities.Grid", "Grid")
                         .WithMany("Modules")
                         .HasForeignKey("GridId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MartianRobots.Database.Entities.Robot", "Robot")
                         .WithOne("LastPosition")
-                        .HasForeignKey("MartianRobots.Database.Entities.Module", "RobotId");
+                        .HasForeignKey("MartianRobots.Database.Entities.Module", "RobotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Grid");
 
                     b.Navigation("Robot");
                 });
 
-            modelBuilder.Entity("MartianRobots.Database.Entities.Robot", b =>
-                {
-                    b.HasOne("MartianRobots.Database.Entities.Grid", "Grid")
-                        .WithMany("Robots")
-                        .HasForeignKey("GridId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Grid");
-                });
-
             modelBuilder.Entity("MartianRobots.Database.Entities.Grid", b =>
                 {
                     b.Navigation("Modules");
-
-                    b.Navigation("Robots");
                 });
 
             modelBuilder.Entity("MartianRobots.Database.Entities.Robot", b =>

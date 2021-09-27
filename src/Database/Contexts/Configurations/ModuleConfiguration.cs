@@ -8,8 +8,6 @@ namespace MartianRobots.Database.Contexts.Configurations
     {
         public void Configure(EntityTypeBuilder<Module> builder)
         {
-            builder.Property(p => p.GridId)
-                .IsRequired();
             builder.Property(p => p.State)
                 .IsRequired();
             builder.Property(p => p.X)
@@ -19,7 +17,8 @@ namespace MartianRobots.Database.Contexts.Configurations
 
             builder.HasOne<Grid>(m => m.Grid)
                 .WithMany(g => g.Modules)
-                .HasForeignKey(m => m.GridId);
+                .HasForeignKey(m => m.GridId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
 

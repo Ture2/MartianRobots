@@ -86,17 +86,17 @@ namespace MartianRobots.UnitTest.Engines
         {
             int prevPositionX = robot.CurrentPosition.X;
             int prevPositionY = robot.CurrentPosition.Y;
-            var res = _receiver.UpdateRobotPosition(grid, x, y);
+            _receiver.UpdateRobotPosition(grid, x, y);
 
             // Prev pos is not busy 
-            Assert.False(res.Grid[prevPositionY, prevPositionX].Busy);
+            Assert.False(grid.Grid[prevPositionY, prevPositionX].Busy);
 
             // New pos is busy
-            Assert.True(res.Grid[y, x].Busy);
+            Assert.True(grid.Grid[y, x].Busy);
 
             // New coordinates are correct
-            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.X, x);
-            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.Y, y);
+            Assert.Equal(grid.CurrentRobotExploring.CurrentPosition.X, x);
+            Assert.Equal(grid.CurrentRobotExploring.CurrentPosition.Y, y);
         }
 
 
@@ -132,13 +132,13 @@ namespace MartianRobots.UnitTest.Engines
                 CurrentRobotExploring = robot
             };
 
-            var res = _receiver.MoveFoward(dto);
+            _receiver.MoveFoward(dto);
 
 
-            Assert.Equal(expected[2], res.CurrentRobotExploring.CurrentPosition.X); // X pos
-            Assert.Equal(expected[3], res.CurrentRobotExploring.CurrentPosition.Y); // Y pos
-            Assert.False(res.Grid[expected[1],expected[0]].Busy); // Busy old
-            Assert.True(res.Grid[expected[3], expected[2]].Busy); // Busy new
+            Assert.Equal(expected[2], dto.CurrentRobotExploring.CurrentPosition.X); // X pos
+            Assert.Equal(expected[3], dto.CurrentRobotExploring.CurrentPosition.Y); // Y pos
+            Assert.False(dto.Grid[expected[1],expected[0]].Busy); // Busy old
+            Assert.True(dto.Grid[expected[3], expected[2]].Busy); // Busy new
 
         }
 
@@ -172,10 +172,10 @@ namespace MartianRobots.UnitTest.Engines
                 CurrentRobotExploring = robot
             };
 
-            var res = _receiver.OutOfSafeZoneMove(dto);
+            _receiver.OutOfSafeZoneMove(dto);
 
 
-            Assert.Null(res.CurrentRobotExploring.CurrentPosition); // old busy
+            Assert.Null(dto.CurrentRobotExploring.CurrentPosition); // old busy
         }
 
         [InlineData(2, 2, 0, 0, Instruction.F, 0, 1, Orientation.N, Orientation.N, 1, true)]
@@ -214,19 +214,19 @@ namespace MartianRobots.UnitTest.Engines
                 CurrentRobotExploring = robot
             };
 
-            var res = _receiver.Move(dto, i);
+             _receiver.Move(dto, i);
 
 
-            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.X, expectedX);
-            Assert.Equal(res.CurrentRobotExploring.CurrentPosition.Y, expectedY);
-            Assert.Equal(res.CurrentRobotExploring.CurrentOrientation, expectedOrientation);
+            Assert.Equal(dto.CurrentRobotExploring.CurrentPosition.X, expectedX);
+            Assert.Equal(dto.CurrentRobotExploring.CurrentPosition.Y, expectedY);
+            Assert.Equal(dto.CurrentRobotExploring.CurrentOrientation, expectedOrientation);
             if (checkBusy)
             {
-                Assert.True(res.Grid[expectedY, expectedX].Busy);
-                Assert.False(res.Grid[yStartPoint, xStartPoint].Busy);
+                Assert.True(dto.Grid[expectedY, expectedX].Busy);
+                Assert.False(dto.Grid[yStartPoint, xStartPoint].Busy);
             }
-            Assert.Equal(res.CurrentRobotExploring.CurrentPosition, res.Grid[expectedY, expectedX]);
-            Assert.Equal(res.CurrentRobotExploring.NumberOfMoves, numMoves);
+            Assert.Equal(dto.CurrentRobotExploring.CurrentPosition, dto.Grid[expectedY, expectedX]);
+            Assert.Equal(dto.CurrentRobotExploring.NumberOfMoves, numMoves);
         }
 
         [InlineData(2, 2, 2, 2, Orientation.N)]
@@ -275,15 +275,15 @@ namespace MartianRobots.UnitTest.Engines
                 CurrentRobotExploring = robot
             };
 
-            var res = _receiver.Move(dto, Instruction.F);
+            _receiver.Move(dto, Instruction.F);
 
 
 
-            Assert.True(res.CurrentRobotExploring.Lost);
-            Assert.Null(res.CurrentRobotExploring.CurrentPosition);
-            Assert.Equal(res.CurrentRobotExploring.LostCoordinates, res.Grid[yStartPoint, xStartPoint]);
-            Assert.False(res.Grid[yStartPoint, xStartPoint].Busy);
-            Assert.Contains(res.CurrentRobotExploring, res.RobotList);
+            Assert.True(dto.CurrentRobotExploring.Lost);
+            Assert.Null(dto.CurrentRobotExploring.CurrentPosition);
+            Assert.Equal(dto.CurrentRobotExploring.LostCoordinates, dto.Grid[yStartPoint, xStartPoint]);
+            Assert.False(dto.Grid[yStartPoint, xStartPoint].Busy);
+            Assert.Contains(dto.CurrentRobotExploring, dto.RobotList);
             
         }
 
@@ -333,10 +333,10 @@ namespace MartianRobots.UnitTest.Engines
             };
 
             //Act
-            var res = _receiver.Move(dto, Instruction.F);
+            _receiver.Move(dto, Instruction.F);
 
             //Assert
-            Assert.Equal(res, dto);
+            Assert.Equal(dto, dto);
             
 
         }

@@ -13,10 +13,10 @@ namespace MartianRobots.Helpers.Receiver
         public MoveRobotCommandReceiver() { }
 
 
-        public GridDTO Move(GridDTO grid, Instruction i)
+        public void Move(GridDTO grid, Instruction i)
         {
             if (i == Instruction.F)
-                grid = MoveFoward(grid);
+                MoveFoward(grid);
             if (i == Instruction.L)
             {
                 grid.CurrentRobotExploring = TurnLeft(grid.CurrentRobotExploring);
@@ -27,11 +27,9 @@ namespace MartianRobots.Helpers.Receiver
             }
 
             grid.CurrentRobotExploring.NumberOfMoves++;
-
-            return grid;
         }
 
-        public GridDTO MoveFoward(GridDTO grid)
+        public void MoveFoward(GridDTO grid)
         {
             RobotDTO robot = grid.CurrentRobotExploring;
             int x = robot.CurrentPosition.X;
@@ -47,11 +45,11 @@ namespace MartianRobots.Helpers.Receiver
                 x--;
             if (IsOutOfSafeZone(grid.XAxisLength, grid.YAxisLength, x, y))
             {
-                return OutOfSafeZoneMove(grid);
+                OutOfSafeZoneMove(grid);
             }
             else
             {
-                return UpdateRobotPosition(grid, x, y); // No out of range so continue
+                UpdateRobotPosition(grid, x, y); // No out of range so continue
             }
         }
 
@@ -73,7 +71,7 @@ namespace MartianRobots.Helpers.Receiver
             return robot;
         }
 
-        public GridDTO UpdateRobotPosition(GridDTO grid, int x, int y)
+        public void UpdateRobotPosition(GridDTO grid, int x, int y)
         {
             if (x < 0 | y < 0)
                 throw new ArgumentOutOfRangeException();
@@ -85,11 +83,9 @@ namespace MartianRobots.Helpers.Receiver
             grid.Grid[y, x].Busy = true;
 
             grid.CurrentRobotExploring.CurrentPosition = grid.Grid[y, x];
-
-            return grid;
         }
 
-        public GridDTO OutOfSafeZoneMove(GridDTO grid)
+        public void OutOfSafeZoneMove(GridDTO grid)
         {
             if (!grid.CurrentRobotExploring.CurrentPosition.Danger)
             {
@@ -101,19 +97,13 @@ namespace MartianRobots.Helpers.Receiver
                 grid.CurrentRobotExploring.CurrentPosition = null;
                 grid.RobotList.Add(grid.CurrentRobotExploring);
             }
-            return grid;
         }
 
-        public GridDTO ValidateMove(GridDTO grid)
+        public void ValidateLastMove(GridDTO grid)
         {
-            
-            if (grid.CurrentRobotExploring.NumberOfMoves == 100)
-            {
-                grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
-                grid.RobotList.Add(grid.CurrentRobotExploring);
-                grid.CurrentRobotExploring.MissionEnded = true;
-            }
-            return grid;
+            grid.Grid[grid.CurrentRobotExploring.CurrentPosition.Y, grid.CurrentRobotExploring.CurrentPosition.X].Busy = false;
+            grid.RobotList.Add(grid.CurrentRobotExploring);
+            grid.CurrentRobotExploring.MissionEnded = true;
         }
 
         public bool IsOutOfSafeZone(int maxX, int maxY, int x, int y)

@@ -15,6 +15,8 @@ namespace MartianRobots.Database.Entities
         public int YAxisLength { get; set; }
         public Planet Planet { get; set; }
 
+        public ICollection<Robot> Robots { get; set; }
+
         public ICollection<Module> Modules{get;set;}
 
     }

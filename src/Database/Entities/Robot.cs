@@ -13,5 +13,9 @@ namespace MartianRobots.Database.Entities
 
         public Module LastPosition { get; set; }
 
+        // Grid
+        public Guid GridId { get; set; }
+        public Grid Grid { get; set; }
+
     }
 }

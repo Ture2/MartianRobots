@@ -1,7 +1,6 @@
 ﻿using MartianRobots.Database.Contexts;
 using MartianRobots.Database.Entities;
 using MartianRobots.Database.Repositores.Base;
-using MartianRobots.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,14 +24,14 @@ namespace MartianRobots.UnitTest
             _martianRobotsContext.Database.EnsureCreated();
         }
 
-        public MartianRobotsRepository<Robot> GetInMemoryReadRepository()
+        public BaseRepository<Robot> GetInMemoryReadRepository()
         {
-            return new MartianRobotsRepository<Robot>(_martianRobotsContext);
+            return new BaseRepository<Robot>(_martianRobotsContext);
         }
 
-        public MartianRobotsRepository<Robot> GetInMemoryWriteRepository()
+        public BaseRepository<Robot> GetInMemoryWriteRepository()
         {
-            return new MartianRobotsRepository<Robot>(_martianRobotsContext);
+            return new BaseRepository<Robot>(_martianRobotsContext);
         }
 
     }

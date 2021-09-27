@@ -1,6 +1,6 @@
 using MartianRobots.Database.Contexts;
 using MartianRobots.Database.Entities;
-using MartianRobots.Database.Repositories;
+using MartianRobots.Database.Repositores.Base;
 using Moq;
 using System;
 using Xunit;
@@ -10,8 +10,8 @@ namespace MartianRobots.UnitTest.Database
     public class Repositories
     {
         private StartUp _startUp = new StartUp();
-        private MartianRobotsRepository<Robot> _read;
-        private MartianRobotsRepository<Robot> _write;
+        private IRepository<Robot> _read;
+        private BaseRepository<Robot> _write;
 
 
         [Fact]

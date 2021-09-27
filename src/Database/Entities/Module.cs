@@ -16,12 +16,12 @@ namespace MartianRobots.Database.Entities
         public int Y { get; set; }
         public State State { get; set; }
        
-        // Robot 
-        public Guid RobotId { get; set; }
+        public Guid? RobotId { get; set; }
         public Robot Robot { get; set; }
+       
 
         // Grid
-        public Guid GridId { get; set; }
+        public Guid? GridId { get; set; }
         public Grid Grid { get; set; } 
     }
 }

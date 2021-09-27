@@ -30,9 +30,7 @@ namespace MartianRobots.Models.Grids
             YAxisLength = grid.XAxisLength;
             Planet = grid.Planet;
             // grid = grid.Modules.fo
+        }
 
-    }
-
-        
     }
 }

@@ -37,22 +37,24 @@ namespace MartianRobots.Helpers.Engines
             // Apply set on mars
             SetPositionCommand(new SetRobotCommand(_item, _gridDTO));
             _setRobotCommand.Execute();
-            _setRobotCommand.GetResult();
+            
 
             // Then run list of moves
 
             foreach (char i in _item.Path)
             {
-                //Pasar _grid como out
                 MoveRobotCommand(new MoveRobotCommand(InstructionParse(i), _gridDTO));
             }
 
             foreach(MoveRobotCommand command in _moveCommands)
             {
-                command.Execute();
-                if (command.GetResult().CurrentRobotExploring.Lost == true |
-                    command.GetResult().CurrentRobotExploring.MissionEnded)
+                if (_gridDTO.CurrentRobotExploring.Lost == true |
+                   _gridDTO.CurrentRobotExploring.MissionEnded)
                     break;
+                command.Execute();
+                if (_gridDTO.CurrentRobotExploring.NumberOfMoves == _moveCommands.Count)
+                    command.Validate();
+
             }
 
         } 

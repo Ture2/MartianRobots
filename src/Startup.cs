@@ -6,7 +6,6 @@ using MartianRobots.Database.Contexts;
 using MartianRobots.Database.Entities;
 using MartianRobots.Database.Repositores;
 using MartianRobots.Database.Repositores.Base;
-using MartianRobots.Database.Repositories;
 using MartianRobots.Servicies;
 using MartianRobots.Shared.Inferfaces.Servicies;
 using Microsoft.AspNetCore.Builder;
@@ -64,7 +63,8 @@ namespace MartianRobots
 
         private void RegisterRepositories(IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(MartianRobotsRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            
         }
 
         private void RegisterServicies(IServiceCollection services)

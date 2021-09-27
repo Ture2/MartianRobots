@@ -4,14 +4,16 @@ using MartianRobots.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MartianRobots.Migrations
 {
     [DbContext(typeof(MartianRobotsContext))]
-    partial class MartianRobotsContextModelSnapshot : ModelSnapshot
+    [Migration("20210925100532_Update-Model-Grid")]
+    partial class UpdateModelGrid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +47,7 @@ namespace MartianRobots.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("GridId")
+                    b.Property<Guid>("GridId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("RobotId")
@@ -105,7 +107,8 @@ namespace MartianRobots.Migrations
                     b.HasOne("MartianRobots.Database.Entities.Grid", "Grid")
                         .WithMany("Modules")
                         .HasForeignKey("GridId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MartianRobots.Database.Entities.Robot", "Robot")
                         .WithOne("LastPosition")

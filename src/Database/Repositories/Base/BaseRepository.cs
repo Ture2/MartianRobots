@@ -1,4 +1,5 @@
-﻿using MartianRobots.Database.Entities;
+﻿using MartianRobots.Database.Contexts;
+using MartianRobots.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace MartianRobots.Database.Repositores.Base
 {
-    public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
-         where TEntity : BaseEntity
-         where TContext : DbContext
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly TContext context;
-        public BaseRepository(TContext context)
+        private readonly MartianRobotsContext context;
+        public BaseRepository(MartianRobotsContext context)
         {
             this.context = context;
         }
@@ -21,6 +20,13 @@ namespace MartianRobots.Database.Repositores.Base
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<IEnumerable<TEntity>> AddRange(IEnumerable<TEntity> entities)
+        {
+            context.Set<TEntity>().AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+            return entities;
         }
 
         public async Task<TEntity> Delete(int id)
