@@ -110,7 +110,7 @@ To run the app, firstly clone this repo with visual studio.
 4. Run migrations and model creation using the command: *"Update-Database"* in the package manager console or *"dotnet ef database update"*  in normal terminal.
 ![Tables](assets/images/ass2.png)
 5. Run the app with MartianRobot Debug Profile.
-6. Test using Postman passing the input requirements. 
+6. Test using Postman passing the input requirements. Postman use to give problems with HTTPS connection so I recommend to use http port (see the image below).
 
 
 ![Example with postman](assets/images/ass1.png "Postman")
