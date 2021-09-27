@@ -70,6 +70,14 @@ namespace MartianRobots.UnitTest.Engines
 
         }
 
+        [Theory]
+        [MemberData(nameof(SetOnGridOutOfRangeData))]
+        public void SetOnGridOutOfRangeTest(GridDTO grid, ModuleDTO robotModule, string orientation, string path)
+        {
+            Assert.Throws<ArgumentException>(() => _receiver.SetOnGrid(grid, robotModule, orientation, path));
+
+        }
+
         #region Data
         public static IEnumerable<object[]> SetRobotData()
         {
@@ -718,6 +726,146 @@ namespace MartianRobots.UnitTest.Engines
             };
         }
 
-#endregion
+        public static IEnumerable<object[]> SetOnGridOutOfRangeData()
+        {
+
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 6,
+                    YAxisLength = 4,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 10,
+                    Y = 6,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "AA"
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 1,
+                    YAxisLength = 1,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 1,
+                    Y = 1,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "FA"
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 1,
+                    YAxisLength = 2,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 1,
+                    Y = 1,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                ""
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 2,
+                    YAxisLength = 1,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 1,
+                    Y = 1,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "aaF"
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 50,
+                    YAxisLength = 51,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 51,
+                    Y = 0,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "F F F"
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 50,
+                    YAxisLength = 50,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 51,
+                    Y = 51,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "12 -A"
+            };
+            yield return new object[]
+            {
+                new GridDTO(){
+                    XAxisLength = 1,
+                    YAxisLength = 1,
+                    Planet = Planet.Mars,
+                    Grid = MockGenerator.GetEmptyGrid(5,3),
+                    RobotList = new List<RobotDTO>()
+                },
+                new ModuleDTO()
+                {
+                    X = 5,
+                    Y = 1,
+                    Busy = true,
+                    Danger = false
+                },
+                "E",
+                "FL R "
+            };
+            
+        }
+
+
+        #endregion
     }
 }
