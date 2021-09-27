@@ -44,7 +44,9 @@ namespace MartianRobots.Helpers.Receivers
                 throw new ArgumentException("Path argument just use F, L or R letters");
             if(!rOrientation.IsMatch(orientation))
                 throw new ArgumentException("Orientation argument just use N, W, E or S letters");
-            
+            if(grid.XAxisLength <= robotModule.X | grid.YAxisLength <= robotModule.Y)
+                throw new ArgumentException("Robot can not be deploy out of range");
+
             RobotDTO robotDTO = new RobotDTO()
             {
                 CurrentPosition = robotModule,

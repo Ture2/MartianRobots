@@ -101,17 +101,18 @@ namespace MartianRobots.UnitTest.Engines
 
 
         
-        [Theory]
+        [Theory(Skip ="Need to redefine")]
         [MemberData(nameof(MoveNormalFowardEast))]
-        public void TestNormalMoveFowardEast(params int[] expected)
+
+        public void TestNormalMoveFowardEast(int[] size, int[] coor, int[] expected)
         {
             // 
 
             ModuleDTO[,] grid = MockGenerator.GetEmptyGrid(5, 3);
             ModuleDTO toModule = new ModuleDTO()
             {
-                X = expected[0],
-                Y = expected[1],
+                X = size[0],
+                Y = size[1],
                 Busy = true,
                 Danger = false
             };
@@ -135,9 +136,9 @@ namespace MartianRobots.UnitTest.Engines
             _receiver.MoveFoward(dto);
 
 
-            Assert.Equal(expected[2], dto.CurrentRobotExploring.CurrentPosition.X); // X pos
-            Assert.Equal(expected[3], dto.CurrentRobotExploring.CurrentPosition.Y); // Y pos
-            Assert.False(dto.Grid[expected[1],expected[0]].Busy); // Busy old
+            Assert.Equal(coor[2], dto.CurrentRobotExploring.CurrentPosition.X); // X pos
+            Assert.Equal(coor[3], dto.CurrentRobotExploring.CurrentPosition.Y); // Y pos
+            Assert.False(dto.Grid[size[1], size[0]].Busy); // Busy old
             Assert.True(dto.Grid[expected[3], expected[2]].Busy); // Busy new
 
         }
@@ -345,11 +346,10 @@ namespace MartianRobots.UnitTest.Engines
         public static IEnumerable<object[]> MoveNormalFowardEast()
         {
             // FFFF 
-            yield return new object[] { 3, 3, 1, 1, 2, 1 };
-            yield return new object[] { 3, 3, 2, 1, 3, 1 };
-            yield return new object[] { 3, 3, 3, 1, 4, 1 };
-            yield return new object[] { 3, 3, 4, 1, 5, 1 };
-
+            yield return new object[] { new object []{ 3, 3 }, new object[] { 1, 1 }, new object[]{ 2, 1 } };
+            yield return new object[] { new object[] { 3, 3 }, new object[] { 2, 1 }, new object[] { 3, 1 } };
+            yield return new object[] { new object[] { 3, 3 }, new object[] { 3, 1 }, new object[] { 4, 1 } };
+            yield return new object[] { new object[] { 3, 3 }, new object[] { 4, 1 }, new object[] { 5, 1 } };
         }
 
         public static IEnumerable<object[]> UpdatePosData()

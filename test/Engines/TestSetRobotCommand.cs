@@ -66,7 +66,6 @@ namespace MartianRobots.UnitTest.Engines
         [MemberData(nameof(SetOnGridWrongPathData))]
         public void SetOnGridWrongPathTest(GridDTO grid, ModuleDTO robotModule, string orientation, string path)
         {
-            GridDTO dto = _receiver.SetOnGrid(grid, robotModule, orientation, path);
             Assert.Throws<ArgumentException>(() => _receiver.SetOnGrid(grid, robotModule, orientation, path));
 
         }

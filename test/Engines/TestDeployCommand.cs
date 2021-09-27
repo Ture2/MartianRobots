@@ -33,6 +33,36 @@ namespace MartianRobots.UnitTest.Engines
             
         }
 
+        [InlineData("-1 -1")]
+        [InlineData("0 -1")]
+        [InlineData("-1 0")]
+        [InlineData("-1 1")]
+        [InlineData("1 -1")]
+        [InlineData("51 1")]
+        [InlineData("1 51")]
+        [InlineData("0 51")]
+        [InlineData("A 1")]
+        [InlineData("1 A")]
+        [InlineData("1 1 1")]
+        [InlineData("1 A 51")]
+        [InlineData("B 0 51")]
+        [Theory]
+        public void ExcuteWrongData(string input)
+        {
+            // Ac
+            DeployDTO data = new DeployDTO()
+            {
+                GridSize = input
+            };
+            _command = new DeployCommand(data);
+
+
+            // Assert
+
+            Assert.Throws<FormatException>(() => _command.Execute());
+
+        }
+
         public static IEnumerable<object[]> DeployData()
         {
             yield return new object[]
@@ -69,6 +99,7 @@ namespace MartianRobots.UnitTest.Engines
             };
         }
 
-        
+       
+
     }
 }

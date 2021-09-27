@@ -8,6 +8,7 @@ using MartianRobots.Database.Repositores;
 using MartianRobots.Database.Repositores.Base;
 using MartianRobots.Servicies;
 using MartianRobots.Shared.Inferfaces.Servicies;
+using MartianRobots.Shared.Interfaces.Servicies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -71,6 +72,7 @@ namespace MartianRobots
         {
             
             services.AddScoped<IRobotService, RobotService>();
+            services.AddScoped<IInfoService, InfoService>();
         }
     }
 }
