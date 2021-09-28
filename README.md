@@ -2,18 +2,18 @@
 
 ## How the project has been developed
 
-After read de documentation provided the firts thing done has been define what kind of application is wanted to get. 
-At this point, it has been chosen to develop a ASP.NET CORE 3.1 Web API. 
-Due to the time of developing somethings are get straightforward.
+After reading the documentation provided the first thing done has been defining what kind of application is wanting to get.
+At this point, it has been chosen to develop an ASP.NET CORE 3.1 Web API.
+Due to the time of developing something are get straightforward.
 
-Considerations taking before start the developing process:
+Considerations taking before starting the development process:
 
-1. Visual Studio 2019 has been selected as principal IDE. 
-2. Entity Framework is the ORM selected to boost the database integration and persistance data. 
-3. Non Relational DB has been refused because of data types. As we want to keep in mind that this app could be increase, main data models (robot, sensors, grid position, info from the grid, astronauts in mars...) could have a relationship between each others.
-4. The web app has 3 principal classes, Grid, Modules and Robots. Grid is the "plantet" divided by a numbers of modules. For example, 1 grid of 2x2 has 6 module 1(1-N relation). A robot explore one grid and has a relation with module (1-1) but not all modules have a robot.
-5. The main purporse has been to make 2 ways of use de app. 1 to explote CRUD calls using "Info" endpoints and another whitch use "Robot" endpoint to modify the model.
-6. At the end of developing, info endpoints are set to develop them. The unique endpoint full useful is "martianrobots/deploy" whitch handle the input requeriment.
+1. Visual Studio 2019 has been selected as principal IDE.
+2. Entity Framework is the ORM selected to boost the database integration
+3. Non Relational DB has been refused because of data types. As we want to keep in mind that this app could be increased, main data models (robot, sensors, grid position, info from the grid, astronauts on mars...) could have a relationship between each others.
+4. The web app has 3 principal classes, Grid, Modules and Robots. Grid is the "planet" divided by a number of modules. For example, 1 grid of 2x2 has 6 module 1 (1-N relation). A robot explores one grid and has a relation to the module (1-1) but not all modules have a robot.
+5. The main purpose has been to make a 2 ways of using the app. 1 to explore CRUD calls using "Info" endpoints and another which use "Robot" endpoint to modify the model.
+6. At the end of developing, info endpoints are set to develop them. The unique endpoint full useful is "martianrobots/deploy" which handle the input requirements.
 
 ## Project
 
@@ -67,34 +67,34 @@ Endpoints can be found inside controller.
 
 Using the clean architecture layer the model was defined using domain driven design and code first with EF Core.
 
-The model is inside Database/Entities folder, and Repositorie and context are folders with the classes to make EF work correctly.
+The model is inside the Database/Entities folder, and Repositories and Context are folders with the classes to make EF work correctly.
 
 The model is generated taking care of multiples Planets (Plante Enum), more instructions to be added (Intruction Enum) and future extensions.
 
 #### Logic
 
-The the web app core follows the command pattern inside Helpers folder.
+The the web app core follows the command pattern inside the Helpers folder.
 
-When the endopoint controller is posted, tha controller use RobotService to perform model update. 
+When the endpoint controller is posted, the controller use RobotService to perform a model update. 
 Then, there are 3 steps, grid creation, robot first deploy and movements.
 These 3 steps are represented by 3 commands inside commands folder, 
 Engines use this created commands reading the path given in the input and pass it to the specific receiver for each single action.
 
 #### Test
 
-Test project is inside test folder. There the unit tast made were created with XUnit framework and Fluent assertions.
+Test project is inside the test folder. There the unit test made were created with XUnit framework and Fluent assertions.
 
-More unit test cases need to be added for example to perform correct insertion in the databse with an in memory database to test. 
+More unit test cases need to be added for example to perform correct insertion in the database with an in memory database to test. 
 
 The unit test created test the principal cases of the input requirements. 
 
 #### More things to add
 
-The main challenge has been to create a extensible app, using dependency injection, repository, singleton, tdd, single-responsability, segregation, etc patterns. 
+The main challenge has been to create an extensible app, using dependency injection, repository, singleton, TDD, single-responsibility, segregation, etc... Patterns. 
 
-At this point, I would like to extend the app ending the Getters endpoints, adding the posibility of a robot "restart" from the finish endpoint, docker integration, microservicies...
+At this point, I would like to extend the app-ending the Getters endpoints, adding the possibility of a robot "restart" from the finish endpoint, docker integration, microservicies...
 
-One point to work would have be to segregate the base repository to give more flexilibity to CRUD operation extending the current base class in new ones and making base class abstract.
+One point to work would have been to segregate the base repository to give more flexibility to CRUD operation, extending the current base class in new ones and making a base class abstract.
 
 # Running the web app
 
